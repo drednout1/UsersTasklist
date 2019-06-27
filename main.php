@@ -13,6 +13,7 @@
 <body>
     <div id="block">
         <form action="login.php">
+            <p>Authorization</p>
             Log <input type="text" name="login" value="<?= $login ?>"><br><br>
             Pass <input type="text" name="pass" value="<?= $pass ?>"><br><br>
             <button type="submit">Confirm</button>
@@ -20,6 +21,7 @@
         <a href="logout.php" name='logout'>Logout</a><br><br>
     </div>
     <div id="block">
+        <p>Registration</p>
         <form action="reg.php">
             Log <input type="text" name="regLog" value="<?= $regLog ?>"><br><br>
             Pass <input type="text" name="regPass" value="<?= $regPass ?>"><br><br>
@@ -28,23 +30,20 @@
         </form>
     </div>
 
-    <?
+    <? session_start();
     ini_set('display_errors', true);
     ini_set('display_startup_errors', true);
     error_reporting(E_ALL);
 
-    // require_once 'login.php';
-
     if (
-        isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['text'])
-        && isset($_GET['regLog']) && isset($_GET['regPass']) && isset($_GET['email'])
+        isset($_GET['login']) && isset($_GET['pass']) && isset($_GET['regLog'])
+        && isset($_GET['regPass']) && isset($_GET['email'])
     ) {
         $email = $_GET['email'];
         $regLog = $_GET['regLog'];
         $regPass = $_GET['regPass'];
         $login = $_GET['login'];
         $pass = $_GET['pass'];
-        $text = $_GET['text'];
     };
 
     if (isset($_GET['logout'])) {
@@ -53,7 +52,9 @@
 
     if (!empty($login && $pass)) {
         header('location: login.php');
-    } elseif (!empty($regLog && $regPass && $email)) {
+    };
+
+    if (!empty($regLog && $regPass && $email)) {
         header('location: reg.php');
     } else ('Fill all forms');
 
@@ -63,10 +64,6 @@
         '',
         'users'
     );
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    };
 
     $sql = 'SELECT * from `users`';
 
@@ -82,12 +79,12 @@
     '</pre>';
     mysqli_close($conn);
 
-    if (session_name('id')) {
+    echo $_SESSION['id'];
+
+    if ($_SESSION['id']) {
         ?><a href="tasks.php" name='return'>Return to tasks</a><br><br>
     <?
 }
-
-
 ?>
 </body>
 

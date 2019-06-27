@@ -23,9 +23,9 @@ $allUsers = 'SELECT * from `users` where `pass`="' . $regPass . '"';
 $user = mysqli_fetch_assoc(mysqli_query($conn, $allUsers));
 
 $newUsers = 'INSERT INTO `users`
-    (`login` , `pass`)
-    values 
-    ("' . $regLog . '" , "' . $regPass . '")';
+    (`login` , `pass` , `email`)
+    VALUES 
+    ("' . $regLog . '" , "' . $regPass . '" , "' . $email . '")';
 
 if ($user == !$regPass) {
         mysqli_query(

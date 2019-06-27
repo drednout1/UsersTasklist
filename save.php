@@ -1,17 +1,13 @@
 <?php
 session_start();
-
+header('location: tasks.php');
 ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
 error_reporting(E_ALL);
 
-header("Location: tasks.php"); 
+require_once('tasks.php');
 
-if (isset($_GET['task'])) {
-    $task = $_GET['task'];
-};
-
-if( $task && $_SESSION['id']){ 
+if ($text) {
     $conn = mysqli_connect(
         'tasklist',
         'root',
@@ -19,13 +15,15 @@ if( $task && $_SESSION['id']){
         'users'
     );
 
-    $del = 'DELETE FROM `task` WHERE id=' . $_SESSION['id'] . ' AND task="' . $task . '"';
+    $add = 'INSERT INTO `task`
+    (`task` , `id`)
+    VALUES 
+    ("' . $text . '" , "' . $_SESSION['id'] . '")';
+
     mysqli_query(
         $conn,
-        $del
+        $add
     );
-    mysqli_close($conn);
-}
-
-
+};
+mysqli_close($conn);
 ?>

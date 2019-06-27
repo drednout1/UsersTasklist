@@ -17,10 +17,6 @@ $conn = mysqli_connect(
     'users'
 );
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $allUsers = 'SELECT * from `users` where `pass`="' . $pass . '"';
 $id = 'SELECT `id` from `users` where `login`="' . $login . '"';
 
@@ -28,9 +24,8 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, $allUsers));
 $userId = mysqli_fetch_assoc(mysqli_query($conn, $id));
 
 if (($login == $user['login']) && ($pass == $user['pass'])) {
-    session_name('id');
-    session_id($userId['id']);
     session_start();
+    $_SESSION['id'] = $userId['id'];
     header('location: tasks.php');
 } else {
     ?><a href="http://tasklist/main.php">Register please</a><?php
